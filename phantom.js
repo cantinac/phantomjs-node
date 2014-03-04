@@ -104,7 +104,24 @@
       httpServer.listen(options.port);
       httpServer.on('listening', function() {
         var ps;
+<<<<<<< HEAD
         ps = startPhantomProcess(options.binary, options.port, options.stdio, args);
+=======
+        ps = startPhantomProcess(options.binary, options.port, args);
+        ps.stdout.on('data', options.onStdout || function(data) {
+          return console.log("phantom stdout: " + data);
+        });
+        ps.stderr.on('data', options.onStderr || function(data) {
+          return module.exports.stderrHandler(data.toString('utf8'));
+        });
+        ps.on('error', function(err) {
+          if ((err != null ? err.code : void 0) === 'ENOENT') {
+            return console.error("phantomjs-node: You don't have 'phantomjs' installed");
+          } else {
+            throw err;
+          }
+        });
+>>>>>>> d4e40cae23c069c35500b8282cf3e41d3afb6d1e
         return ps.on('exit', function(code, signal) {
           var p;
           httpServer.close();

@@ -11,19 +11,8 @@ phanta = []
 # @args: args:object
 # @return: ps:object
 startPhantomProcess = (binary, port, stdio, args) ->
-  ps = child.spawn binary, args.concat([__dirname+'/shim.js', port]), stdio
+  child.spawn binary, args.concat([__dirname+'/shim.js', port]), stdio
 
-  if stdio != "ignore"
-    ps.stdout.on 'data', (data) -> module.exports.stdoutHandler(data.toString('utf8'))
-    ps.stderr.on 'data', (data) -> module.exports.stderrHandler(data.toString('utf8'))
-  
-  ps.on 'error', (err) ->
-    if err?.code is 'ENOENT'
-      console.error "phantomjs-node: You don't have 'phantomjs' installed"
-    else
-      throw err
-      
-  ps
 
 # @Description: kills off all phantom processes within spawned by this parent process when it is exits
 onSignal = ->
@@ -67,6 +56,16 @@ module.exports =
     httpServer.on 'listening', () ->
 
       ps = startPhantomProcess options.binary, options.port, options.stdio, args
+
+      ps.stdout.on 'data', options.onStdout || (data) -> module.exports.stdoutHandler(data.toString('utf8'))
+      
+      ps.stderr.on 'data', options.onStderr || (data) -> module.exports.stderrHandler(data.toString('utf8'))
+      
+      ps.on 'error', (err) ->
+        if err?.code is 'ENOENT'
+          console.error "phantomjs-node: You don't have 'phantomjs' installed"
+        else
+          throw err
 
       # @Description: when the background phantomjs child process exits or crashes
       #   removes the current dNode phantomjs RPC wrapper from the list of phantomjs RPC wrapper
