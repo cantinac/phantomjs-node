@@ -5519,14 +5519,14 @@ require.define("/shim.coffee", function (require, module, exports, __dirname, __
         };
         return cb();
       },
+      setPaperSize: function(options, cb) {
+        if (cb == null) cb = function() {};
+        page.paperSize = options;
+        return cb();
+      },
       setZoomFactor: function(zoomFactor, cb) {
         if (cb == null) cb = function() {};
         page.zoomFactor = zoomFactor;
-        return cb();
-      },
-      setPaperSize:function(paperSize, cb) {
-        if (cb == null) cb = function() {};
-        page.paperSize=paperSize;
         return cb();
       }
     });
