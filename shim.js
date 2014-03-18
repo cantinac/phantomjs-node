@@ -5495,6 +5495,11 @@ require.define("/shim.coffee", function (require, module, exports, __dirname, __
         return request.abort();
       }
 
+      if (/Newsletter-DialogForm/gi.test(requestData.url)) {
+        console.log('Aborting request to: ' + requestData.url);
+        return request.abort();
+      }
+
       console.log("Request sent to: " + requestData.url);
     };
 
