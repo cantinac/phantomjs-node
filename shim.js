@@ -5476,10 +5476,23 @@ require.define("/shim.coffee", function (require, module, exports, __dirname, __
   pageWrap = function(page) {
     page.onResourceRequested = function(requestData, request) {
       if (/http:\/\/.+?\.css/gi.test(requestData.url) || requestData.headers['Content-Type'] === 'text/css') {
-        console.log('The url of the request is matching. Aborting: ' + requestData.url);
+        console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
+
+      if (/bazaarvoice/gi.test(requestData.url)) {
+        console.log('Aborting request to: ' + requestData.url);
+        return request.abort();
+      }
+
+      if (/ct1.addthis.com/gi.test(requestData.url)) {
+        console.log('Aborting request to: ' + requestData.url);
+        return request.abort();
+      }
+
+      console.log("Request sent to: " + requestData.url);
     };
+
     return mkwrap(page, ['open', 'close', 'includeJs', 'sendEvent', 'release', 'uploadFile', 'close', 'goBack', 'goForward', 'reload'], {
       injectJs: function(js, cb) {
         if (cb == null) cb = function() {};
