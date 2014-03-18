@@ -5475,22 +5475,33 @@ require.define("/shim.coffee", function (require, module, exports, __dirname, __
 
   pageWrap = function(page) {
     page.onResourceRequested = function(requestData, request) {
-      if (/http:\/\/.+?\.css/gi.test(requestData.url) || requestData.headers['Content-Type'] === 'text/css') {
+      /*
+      if (/\.css/gi.test(requestData.url) || requestData.headers['Content-Type'] === 'text/css') {
         console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
 
+      if (/\.woff/gi.test(requestData.url)) {
+        console.log('Aborting request to: ' + requestData.url);
+        return request.abort();
+      }
+
+      if (/pfa\.levexis\.com/gi.test(requestData.url)) {
+        console.log('Aborting request to: ' + requestData.url);
+        return request.abort();
+      }
+    
       if (/bazaarvoice/gi.test(requestData.url)) {
         console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
 
-      if (/ct1.addthis.com/gi.test(requestData.url)) {
+      if (/ct1\.addthis\.com/gi.test(requestData.url)) {
         console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
 
-      if (/smarterremarketer.net/gi.test(requestData.url)) {
+      if (/smarterremarketer\.net/gi.test(requestData.url)) {
         console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
@@ -5499,7 +5510,8 @@ require.define("/shim.coffee", function (require, module, exports, __dirname, __
         console.log('Aborting request to: ' + requestData.url);
         return request.abort();
       }
-
+      */
+      
       console.log("Request sent to: " + requestData.url);
     };
 
